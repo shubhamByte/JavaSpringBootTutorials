@@ -2,10 +2,14 @@ package com.springBootAnujBhaiya.Week2Lectures.entities;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 // don't use hashcode and equalto from lombok that crates problem with object which is rdbms.
 // if you want to define them by yourself.
@@ -25,6 +29,10 @@ public class EmployeeEntity {
 
     private String name;
     private Integer age;
+    private String role;
+    private Double salary;
+    private LocalDate dateOfJoining;
+    private String email;
     private String address;
     private Boolean isActive;
 }

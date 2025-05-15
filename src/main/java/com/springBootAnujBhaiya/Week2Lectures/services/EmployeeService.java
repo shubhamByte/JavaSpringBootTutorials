@@ -33,7 +33,7 @@ public class EmployeeService {
     }
 
     public List<EmployeeDTO> findAll() {
-        // add s(plural) if list or multiple
+
         List<EmployeeEntity> employeeEntities = employeeRepository.findAll();
 
         return employeeEntities

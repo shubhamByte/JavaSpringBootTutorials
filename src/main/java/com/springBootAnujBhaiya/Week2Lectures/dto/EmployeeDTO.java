@@ -2,6 +2,7 @@ package com.springBootAnujBhaiya.Week2Lectures.dto;
 
 // dto dont have any annotations or imports. its just plain java object.
 
+import com.springBootAnujBhaiya.Week2Lectures.annotations.EmployeeRoleValidation;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,7 +32,8 @@ public class EmployeeDTO {
     private Integer age;
 
     @NotBlank(message = "role of the employee can't be blank")
-    @Pattern(regexp = "^(user|admin)$", message = "role should be either user or admin")
+//    @Pattern(regexp = "^(user|admin)$", message = "role should be either user or admin")
+    @EmployeeRoleValidation
     private String role;
 
     @NotNull(message = "salary of the employee cant be null")

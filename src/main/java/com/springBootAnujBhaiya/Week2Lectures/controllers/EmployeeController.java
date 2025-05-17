@@ -1,14 +1,17 @@
 package com.springBootAnujBhaiya.Week2Lectures.controllers;
 
 import com.springBootAnujBhaiya.Week2Lectures.dto.EmployeeDTO;
+import com.springBootAnujBhaiya.Week2Lectures.exceptions.ResourceNotFoundException;
 import com.springBootAnujBhaiya.Week2Lectures.services.EmployeeService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @RequestMapping("/employee")
@@ -29,7 +32,7 @@ public class EmployeeController {
 
         return employeeDTO
                 .map( employeeDTO1 -> ResponseEntity.ok(employeeDTO1))
-                .orElse(ResponseEntity.notFound().build());
+                .orElseThrow(() -> new ResourceNotFoundException("no such element found with id : " + id));
 
         // use map this way if you want ki agar null nahi hai to this otherwise orElse.
     }
@@ -69,5 +72,15 @@ public class EmployeeController {
         if(updatedEmployeeDTO == null) return ResponseEntity.notFound().build();
         else return ResponseEntity.ok(updatedEmployeeDTO);
     }
+
+
+
+    // Exception Handler
+//    @ExceptionHandler(NoSuchElementException.class)
+//    public ResponseEntity<String> elementNotFoundException(NoSuchElementException nSEE){
+//        return new ResponseEntity<>("no such element found", HttpStatus.NOT_FOUND);
+//    }
+
+
 
 }

@@ -2,8 +2,8 @@ package com.springBootAnujBhaiya.Week2Lectures.services;
 
 import com.springBootAnujBhaiya.Week2Lectures.dto.EmployeeDTO;
 import com.springBootAnujBhaiya.Week2Lectures.entities.EmployeeEntity;
+import com.springBootAnujBhaiya.Week2Lectures.exceptions.ResourceNotFoundException;
 import com.springBootAnujBhaiya.Week2Lectures.repositories.EmployeeRepository;
-import org.apache.el.util.ReflectionUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.util.ReflectionUtils;
 import org.springframework.stereotype.Service;
@@ -49,9 +49,12 @@ public class EmployeeService {
         return modelMapper.map(savedEntity, EmployeeDTO.class);
     }
 
+
     public EmployeeDTO updateEmployeeById(Long id, EmployeeDTO updatedEmployeeDTO) {
+
+        isExistEmployeeById(id);
+
         EmployeeEntity updatedEmployeeEntity =  modelMapper.map(updatedEmployeeDTO, EmployeeEntity.class);
-        updatedEmployeeEntity.setId(id);
 
         // tries to find the data with id. similaar to unordered_map key. if found updates. if not
         // found, crates new one.
@@ -61,15 +64,18 @@ public class EmployeeService {
     }
 
     public boolean deleteEmployeeById(Long id) {
-        boolean exists = employeeRepository.existsById(id);
-        if(!exists) return false;
+
+        isExistEmployeeById(id);
+
         employeeRepository.deleteById(id);
         return true;
     }
 
     public EmployeeDTO partialUpdatesEmployeeById(Long id, Map<String, Object> updatesMap) {
-        EmployeeEntity employeeEntity = employeeRepository.findById(id).orElse(null);
-        if(employeeEntity == null) return null;
+
+        isExistEmployeeById(id);
+
+        EmployeeEntity employeeEntity = employeeRepository.findById(id).get();
 
         updatesMap.forEach((key, value) -> {
             Field updatableField = ReflectionUtils.findRequiredField(EmployeeEntity.class, key);
@@ -79,5 +85,9 @@ public class EmployeeService {
         });
         EmployeeEntity updatedEmployeeEntity = employeeRepository.save(employeeEntity);
         return modelMapper.map(updatedEmployeeEntity, EmployeeDTO.class);
+    }
+
+    public void isExistEmployeeById(Long id){
+        if(!employeeRepository.existsById(id)) throw new ResourceNotFoundException("Resource with id " + id + " not found");
     }
 }

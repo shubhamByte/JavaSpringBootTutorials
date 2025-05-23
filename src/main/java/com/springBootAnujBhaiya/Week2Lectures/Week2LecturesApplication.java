@@ -13,4 +13,4 @@ public class Week2LecturesApplication {
 }
 
 // we name of the object of the class with the same name but first letter is small.
-// this is kind of convention i have seen people follow in springboot.
+// this is kind of convention i h/ave seen people follow in springboot.
